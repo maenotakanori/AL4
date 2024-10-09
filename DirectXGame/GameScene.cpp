@@ -5,6 +5,7 @@ GameScene::GameScene() {}
 GameScene::~GameScene() {
 	delete model_;
 	delete player_;
+	delete debugCamera_;
 
 }
 
@@ -22,11 +23,35 @@ void GameScene::Initialize() {
 	player_ = new Player();
 	player_->Initialize(model_,&camera_,playerPosition);
 
+	debugCamera_ = new DebugCamera(1280, 720);
+
+	AxisIndicator::GetInstance()->SetVisible(true);
+	AxisIndicator::GetInstance()->SetTargetCamera(&camera_);
+
 }
 
 void GameScene::Update() {
 	player_->Update();
+	debugCamera_->Update();
 
+#ifdef _DEBUG
+	if (input_->TriggerKey(DIK_0)) {
+		isDebugCameraActive_ = !isDebugCameraActive_;
+	}
+#endif
+
+	// 　カメラの処理
+	if (isDebugCameraActive_) {
+		debugCamera_->Update();
+		camera_.matView = debugCamera_->GetCamera().matView;
+		camera_.matProjection = debugCamera_->GetCamera().matProjection;
+		// 　ビュープロジェクション行列の転送
+		camera_.TransferMatrix();
+	}
+	else {
+		// 　ビュープロジェクション行列の更新と転送
+		camera_.TransferMatrix();
+	}
 
 
 }

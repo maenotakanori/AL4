@@ -6,21 +6,29 @@
 #include <math\MathUtility.h>
 #include <input\Input.h>
 
-
 //#include <KamataEngine.h>
-using namespace KamataEngine;
+//using namespace KamataEngine;
+
+namespace KamataEngine {
+	class Input;
+}
 
 class Player {
+
+	//Vector3 move;
+
 public:
-	void Initialize(Model* model, Camera* viewProjection, const Vector3& position);
+	void Initialize(KamataEngine::Model* model, KamataEngine::Camera* viewProjection, const KamataEngine::Vector3& position);
 	void Update();
 	void Draw();
 
 private:
-	WorldTransform worldTransform_ = {};
-	Camera* camera_ = nullptr;
-	Model* model_ = nullptr;
-	uint32_t textureHandle_ = 0u;
-	ObjectColor objColor = {};
+	KamataEngine::WorldTransform worldTransform_ = {};
+	KamataEngine::Camera* camera_ = nullptr;
+	KamataEngine::Model* model_ = nullptr;
+	KamataEngine::ObjectColor objColor = {};
+	
+	// キーボード入力
+	KamataEngine::Input* input_ = nullptr;
 
 };
